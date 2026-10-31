@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import api from '../../api';
 import {
   ResponsiveContainer,
@@ -9,6 +10,9 @@ import {
   Tooltip,
   CartesianGrid
 } from 'recharts';
+import AnimatedPage from '../../components/AnimatedPage';
+import DishImage from '../../components/DishImage';
+import SkeletonLoader from '../../components/SkeletonLoader';
 import './Analytics.css';
 
 export default function AdminAnalytics() {
@@ -28,7 +32,6 @@ export default function AdminAnalytics() {
   const [aiFailedNotice, setAiFailedNotice] = useState(false);
   const [rescanning, setRescanning] = useState(false);
 
-  // Load existing report + live stats and flagged ratings
   async function loadData() {
     setLoading(true);
     try {
@@ -57,7 +60,6 @@ export default function AdminAnalytics() {
     loadData();
   }, []);
 
-  // Generate / Regenerate AI insights
   async function handleGenerateInsights() {
     setGenerating(true);
     setAiFailedNotice(false);
@@ -75,7 +77,6 @@ export default function AdminAnalytics() {
         setAiFailedNotice(true);
       }
 
-      // Update selected dish with fresh AI data
       if (selectedDish) {
         const updated = res.data.dishes.find(d => d.name === selectedDish.name);
         if (updated) setSelectedDish(updated);
@@ -87,7 +88,6 @@ export default function AdminAnalytics() {
     }
   }
 
-  // Handle re-scan of suspicious ratings
   async function handleRescan() {
     setRescanning(true);
     try {
@@ -101,7 +101,6 @@ export default function AdminAnalytics() {
     }
   }
 
-  // Toggle/unflag a single rating
   async function handleToggleFlag(ratingId, currentFlagged) {
     try {
       await api.put(`/admin/ratings/${ratingId}/flag`, { flagged: !currentFlagged });
@@ -111,7 +110,6 @@ export default function AdminAnalytics() {
     }
   }
 
-  // Sorting
   function handleSort(field) {
     if (sortField === field) {
       setSortAsc(!sortAsc);
@@ -136,7 +134,7 @@ export default function AdminAnalytics() {
   });
 
   return (
-    <div className="admin-analytics-page">
+    <AnimatedPage className="admin-analytics-page">
       <div className="analytics-header">
         <div>
           <h1 className="page-title">Dishes & Feedback Analytics</h1>
@@ -147,7 +145,10 @@ export default function AdminAnalytics() {
       </div>
 
       {loading ? (
-        <div className="loading-state">⏳ Computing dish analytics & time series...</div>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+          <SkeletonLoader type="card" height={120} />
+          <SkeletonLoader type="card" height={360} />
+        </div>
       ) : error ? (
         <div className="alert alert-error">{error}</div>
       ) : (
@@ -170,11 +171,22 @@ export default function AdminAnalytics() {
               </button>
             </div>
 
-            <p className="ai-summary-body">
-              {report.overall_summary || (
-                <em>No AI report generated yet. Click "Generate AI Insights" above to synthesize student reviews into kitchen recommendations.</em>
-              )}
-            </p>
+            {generating ? (
+              <div style={{ marginTop: '0.85rem' }}>
+                <SkeletonLoader type="card" height={55} />
+              </div>
+            ) : (
+              <motion.p
+                className="ai-summary-body"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.35 }}
+              >
+                {report.overall_summary || (
+                  <em>No AI report generated yet. Click "Generate AI Insights" above to synthesize student reviews into kitchen recommendations.</em>
+                )}
+              </motion.p>
+            )}
           </div>
 
           {/* Main Dish Table & Detail Panel Split */}
@@ -225,12 +237,15 @@ export default function AdminAnalytics() {
                           onClick={() => setSelectedDish(d)}
                         >
                           <td>
-                            <strong>{d.name}</strong>
-                            {d.flagged_count > 0 && (
-                              <span className="flag-dot" title={`${d.flagged_count} flagged reviews`}>
-                                ⚠️
-                              </span>
-                            )}
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                              <DishImage size={24} />
+                              <strong>{d.name}</strong>
+                              {d.flagged_count > 0 && (
+                                <span className="flag-dot" title={`${d.flagged_count} flagged reviews`}>
+                                  ⚠️
+                                </span>
+                              )}
+                            </div>
                           </td>
                           <td>
                             <span className="rating-score">★ {d.avg_stars}</span>
@@ -250,9 +265,15 @@ export default function AdminAnalytics() {
                             )}
                           </td>
                           <td>
-                            <span className={`rec-badge ${rec.tone}`}>
+                            <motion.span
+                              key={rec.label}
+                              initial={{ scale: 0.85, opacity: 0 }}
+                              animate={{ scale: 1, opacity: 1 }}
+                              transition={{ type: 'spring', stiffness: 450, damping: 25 }}
+                              className={`rec-badge ${rec.tone}`}
+                            >
                               {rec.label}
-                            </span>
+                            </motion.span>
                           </td>
                         </tr>
                       );
@@ -262,75 +283,101 @@ export default function AdminAnalytics() {
               </div>
             </div>
 
-            {/* Dish Detail Panel */}
-            {selectedDish && (
-              <div className="card detail-panel">
-                <div className="detail-header">
-                  <div>
-                    <h3 className="detail-dish-title">{selectedDish.name}</h3>
-                    <span className="detail-stat-sub">
-                      ★ {selectedDish.avg_stars} • {selectedDish.rating_count} verified ratings
-                    </span>
+            {/* Sliding Detail Inspector from the right */}
+            <AnimatePresence mode="wait">
+              {selectedDish && (
+                <motion.div
+                  key={selectedDish.name}
+                  className="card detail-panel"
+                  initial={{ opacity: 0, x: 25 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: 25 }}
+                  transition={{ type: 'spring', damping: 28, stiffness: 320 }}
+                >
+                  <div className="detail-header">
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                      <DishImage size={44} />
+                      <div>
+                        <h3 className="detail-dish-title">{selectedDish.name}</h3>
+                        <span className="detail-stat-sub">
+                          ★ {selectedDish.avg_stars} • {selectedDish.rating_count} verified ratings
+                        </span>
+                      </div>
+                    </div>
+                    <motion.span
+                      initial={{ scale: 0.85 }}
+                      animate={{ scale: 1 }}
+                      transition={{ type: 'spring', stiffness: 400 }}
+                      className={`rec-badge large ${selectedDish.recommendation?.tone}`}
+                    >
+                      {selectedDish.recommendation?.label}
+                    </motion.span>
                   </div>
-                  <span className={`rec-badge large ${selectedDish.recommendation?.tone}`}>
-                    {selectedDish.recommendation?.label}
-                  </span>
-                </div>
 
-                {/* 14-Day Line Chart */}
-                <div className="chart-box">
-                  <div className="chart-title">14-Day Rating Trend (Asia/Kolkata)</div>
-                  {(!selectedDish.series || selectedDish.series.length === 0) ? (
-                    <div className="chart-empty">No daily rating points available for this dish.</div>
-                  ) : (
-                    <div style={{ width: '100%', height: 180 }}>
-                      <ResponsiveContainer width="100%" height="100%">
-                        <LineChart data={selectedDish.series} margin={{ top: 10, right: 10, left: -25, bottom: 0 }}>
-                          <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f0f0f0" />
-                          <XAxis dataKey="date" tick={{ fontSize: 10 }} tickFormatter={d => d.slice(5)} />
-                          <YAxis domain={[1, 5]} ticks={[1, 2, 3, 4, 5]} tick={{ fontSize: 10 }} />
-                          <Tooltip formatter={(val) => [`${val} ★`, 'Avg Score']} />
-                          <Line type="monotone" dataKey="avg" stroke="#16a34a" strokeWidth={2.5} dot={{ r: 3 }} />
-                        </LineChart>
-                      </ResponsiveContainer>
-                    </div>
-                  )}
-                </div>
+                  {/* 14-Day Line Chart with auto drawing animation */}
+                  <div className="chart-box">
+                    <div className="chart-title">14-Day Rating Trend (Asia/Kolkata)</div>
+                    {(!selectedDish.series || selectedDish.series.length === 0) ? (
+                      <div className="chart-empty">No daily rating points available for this dish.</div>
+                    ) : (
+                      <div style={{ width: '100%', height: 180 }}>
+                        <ResponsiveContainer width="100%" height="100%">
+                          <LineChart data={selectedDish.series} margin={{ top: 10, right: 10, left: -25, bottom: 0 }}>
+                            <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f0f0f0" />
+                            <XAxis dataKey="date" tick={{ fontSize: 10 }} tickFormatter={d => d.slice(5)} />
+                            <YAxis domain={[1, 5]} ticks={[1, 2, 3, 4, 5]} tick={{ fontSize: 10 }} />
+                            <Tooltip formatter={(val) => [`${val} ★`, 'Avg Score']} />
+                            <Line
+                              type="monotone"
+                              dataKey="avg"
+                              stroke="#15803d"
+                              strokeWidth={2.5}
+                              dot={{ r: 3, fill: '#15803d' }}
+                              isAnimationActive={true}
+                              animationDuration={1100}
+                              animationEasing="ease-out"
+                            />
+                          </LineChart>
+                        </ResponsiveContainer>
+                      </div>
+                    )}
+                  </div>
 
-                {/* AI Review Summary & Reason */}
-                <div className="detail-ai-box">
-                  <div className="ai-box-heading">🤖 Kitchen Action Analysis</div>
-                  <p className="ai-analysis-text">
-                    <strong>Feedback:</strong> {selectedDish.ai_summary || 'Feedback analysis awaiting AI run.'}
-                  </p>
-                  <p className="ai-analysis-text">
-                    <strong>Production Plan:</strong> {selectedDish.ai_reason || selectedDish.recommendation?.label}
-                  </p>
-                </div>
+                  {/* AI Review Summary & Reason */}
+                  <div className="detail-ai-box">
+                    <div className="ai-box-heading">🤖 Kitchen Action Analysis</div>
+                    <p className="ai-analysis-text">
+                      <strong>Feedback:</strong> {selectedDish.ai_summary || 'Feedback analysis awaiting AI run.'}
+                    </p>
+                    <p className="ai-analysis-text">
+                      <strong>Production Plan:</strong> {selectedDish.ai_reason || selectedDish.recommendation?.label}
+                    </p>
+                  </div>
 
-                {/* Recent Student Comments */}
-                <div className="detail-comments-box">
-                  <div className="comments-heading">Student Feedback ({selectedDish.comments?.length || 0})</div>
-                  {(!selectedDish.comments || selectedDish.comments.length === 0) ? (
-                    <p className="no-comments">No written comments submitted for this dish.</p>
-                  ) : (
-                    <div className="comments-scroll">
-                      {selectedDish.comments.map((c, i) => (
-                        <div key={i} className="comment-bubble">
-                          <div className="bubble-top">
-                            <span className="bubble-stars">★ {c.stars}</span>
-                            <span className="bubble-date">
-                              {new Date(c.created_at).toLocaleDateString('en-IN', { day: 'numeric', month: 'short' })}
-                            </span>
+                  {/* Recent Student Comments */}
+                  <div className="detail-comments-box">
+                    <div className="comments-heading">Student Feedback ({selectedDish.comments?.length || 0})</div>
+                    {(!selectedDish.comments || selectedDish.comments.length === 0) ? (
+                      <p className="no-comments">No written comments submitted for this dish.</p>
+                    ) : (
+                      <div className="comments-scroll">
+                        {selectedDish.comments.map((c, i) => (
+                          <div key={i} className="comment-bubble">
+                            <div className="bubble-top">
+                              <span className="bubble-stars">★ {c.stars}</span>
+                              <span className="bubble-date">
+                                {new Date(c.created_at).toLocaleDateString('en-IN', { day: 'numeric', month: 'short' })}
+                              </span>
+                            </div>
+                            <p className="bubble-text">"{c.comment}"</p>
                           </div>
-                          <p className="bubble-text">"{c.comment}"</p>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              </div>
-            )}
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
           </div>
 
           {/* ── Suspicious & Flagged Ratings Section ──────────────────────── */}
@@ -355,7 +402,7 @@ export default function AdminAnalytics() {
 
             {flaggedRatings.length === 0 ? (
               <div className="empty-state">
-                <span>🛡️</span>
+                <span className="empty-icon">🛡️</span>
                 <p>No suspicious or brigaded ratings currently flagged. All student ratings verified authentic.</p>
               </div>
             ) : (
@@ -387,7 +434,8 @@ export default function AdminAnalytics() {
                         <td style={{ textAlign: 'right' }}>
                           <button
                             type="button"
-                            className="btn btn-unflag"
+                            className="btn btn-outline"
+                            style={{ fontSize: '0.78rem', padding: '0.3rem 0.65rem' }}
                             onClick={() => handleToggleFlag(r.id, r.flagged)}
                           >
                             Un-flag
@@ -402,6 +450,6 @@ export default function AdminAnalytics() {
           </div>
         </>
       )}
-    </div>
+    </AnimatedPage>
   );
 }

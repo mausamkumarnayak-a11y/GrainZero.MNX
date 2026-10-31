@@ -20,3 +20,4 @@ services:
         generateValue: true
       - key: ADMIN_SIGNUP_CODE
         value: GRAIN-ADMIN-2026
+

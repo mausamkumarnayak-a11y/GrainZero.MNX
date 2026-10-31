@@ -1,7 +1,8 @@
 .student-rate-page {
   max-width: 960px;
   margin: 0 auto;
-  padding-bottom: 3rem;
+  padding-bottom: 2rem;
+  width: 100%;
 }
 
 .rate-header {
@@ -15,10 +16,11 @@
 }
 
 .rate-meal-card {
-  padding: 1.3rem;
-  border-radius: 12px;
-  border: 1px solid #e5e7eb;
+  padding: 1.4rem;
+  border-radius: var(--r, 14px);
+  border: 1px solid #eef2eb;
   background: #ffffff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
 }
 
 .rate-meal-header {
@@ -26,8 +28,8 @@
   align-items: center;
   gap: 0.75rem;
   margin-bottom: 1.25rem;
-  padding-bottom: 0.75rem;
-  border-bottom: 1px solid #f3f4f6;
+  padding-bottom: 0.85rem;
+  border-bottom: 1px solid #eef2eb;
 }
 
 .rate-meal-emoji {
@@ -37,17 +39,18 @@
 .rate-meal-title {
   margin: 0;
   font-size: 1.15rem;
-  font-weight: 700;
-  color: #1f2937;
+  font-weight: 800;
+  color: var(--gray900, #0f172a);
 }
 
 .rate-meal-date {
-  color: #166534;
+  color: var(--primary, #15803d);
 }
 
 .rate-meal-timing {
-  font-size: 0.8rem;
-  color: #6b7280;
+  font-size: 0.82rem;
+  color: var(--gray500, #64748b);
+  font-weight: 500;
 }
 
 .rate-dishes-grid {
@@ -57,17 +60,18 @@
 }
 
 .dish-rating-card {
-  background: #f9fafb;
-  border: 1px solid #e5e7eb;
-  border-radius: 10px;
-  padding: 1.1rem;
+  background: #fafaf9;
+  border: 1px solid #eef2eb;
+  border-radius: 12px;
+  padding: 1.15rem;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  transition: border-color 0.2s ease, background 0.2s ease;
 }
 
 .dish-rating-card.is-saved {
-  border-color: #86efac;
+  border-color: #bbf7d0;
   background: #f0fdf4;
 }
 
@@ -75,23 +79,24 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 0.75rem;
+  margin-bottom: 0.85rem;
 }
 
 .dish-name-heading {
   margin: 0;
-  font-size: 1rem;
+  font-size: 1.02rem;
   font-weight: 700;
-  color: #1f2937;
+  color: var(--gray900, #0f172a);
 }
 
 .saved-badge {
-  background: #dcfce7;
-  color: #15803d;
-  font-size: 0.75rem;
+  background: var(--tint, #EAF3DE);
+  color: var(--dark-text, #27500A);
+  font-size: 0.74rem;
   font-weight: 700;
-  padding: 0.2rem 0.5rem;
-  border-radius: 4px;
+  padding: 0.2rem 0.55rem;
+  border-radius: 6px;
+  border: 1px solid #cce3b7;
 }
 
 /* Star rating input */
@@ -99,34 +104,34 @@
   display: flex;
   align-items: center;
   gap: 0.35rem;
-  margin-bottom: 0.75rem;
+  margin-bottom: 0.85rem;
 }
 
 .star-btn {
   background: none;
   border: none;
-  font-size: 1.8rem;
-  color: #d1d5db;
+  font-size: 1.85rem;
+  color: #cbd5e1;
   cursor: pointer;
   padding: 0;
   line-height: 1;
-  transition: transform 0.1s, color 0.1s;
+  user-select: none;
+  transition: color 0.15s ease;
 }
 
 .star-btn:hover {
-  transform: scale(1.15);
-  color: #f59e0b;
+  color: var(--amber, #F2B01E);
 }
 
 .star-btn.active {
-  color: #f59e0b;
+  color: var(--amber, #F2B01E);
 }
 
 .star-score-label {
-  font-size: 0.85rem;
-  color: #6b7280;
-  margin-left: 0.4rem;
-  font-weight: 600;
+  font-size: 0.86rem;
+  color: var(--gray600, #475569);
+  margin-left: 0.45rem;
+  font-weight: 700;
 }
 
 /* Comment Box */
@@ -136,31 +141,34 @@
 
 .comment-input-wrap textarea {
   width: 100%;
-  padding: 0.5rem 0.65rem;
-  border-radius: 6px;
-  border: 1px solid #d1d5db;
-  font-size: 0.82rem;
+  padding: 0.6rem 0.75rem;
+  border-radius: 8px;
+  border: 1.5px solid #e2e8f0;
+  font-size: 0.85rem;
+  background: #ffffff;
   resize: vertical;
   box-sizing: border-box;
+  font-family: inherit;
+  color: var(--gray800, #1e293b);
+  transition: border-color 0.15s ease;
 }
 
 .comment-input-wrap textarea:focus {
   outline: none;
-  border-color: #16a34a;
+  border-color: var(--primary, #15803d);
 }
 
 .char-counter {
   font-size: 0.72rem;
-  color: #9ca3af;
+  color: var(--gray400, #94a3b8);
   text-align: right;
   margin-top: 0.2rem;
 }
 
 .submit-rating-btn {
   width: 100%;
-  padding: 0.55rem;
-  font-size: 0.85rem;
+  padding: 0.6rem;
+  font-size: 0.88rem;
   font-weight: 600;
-  border-radius: 6px;
+  border-radius: 8px;
 }
-

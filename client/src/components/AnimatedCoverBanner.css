@@ -1,0 +1,102 @@
+.animated-banner-wrap {
+  position: relative;
+  width: 100%;
+  border-radius: var(--radius, 12px);
+  overflow: hidden;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+  margin-bottom: 1.5rem;
+  background: #0b3d2a;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.banner-base-img {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  display: block;
+}
+
+.banner-particles-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 2;
+}
+
+/* Floating Grains Drift Keyframes */
+@keyframes floatGrainDrift {
+  0% {
+    transform: translate3d(0, 115%, 0) rotate(0deg) scale(0.6);
+    opacity: 0;
+  }
+  15% {
+    opacity: 0.85;
+  }
+  85% {
+    opacity: 0.7;
+  }
+  100% {
+    transform: translate3d(var(--x-drift, 15px), -25%, 0) rotate(220deg) scale(1.05);
+    opacity: 0;
+  }
+}
+
+.floating-grain-particle {
+  position: absolute;
+  bottom: 0;
+  will-change: transform, opacity;
+  animation-name: floatGrainDrift;
+  animation-iteration-count: infinite;
+  animation-timing-function: cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+/* Slowly Rotating Dashed Leaf Ring on Right */
+.rotating-leaf-ring-wrap {
+  position: absolute;
+  right: -25px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 180px;
+  height: 180px;
+  opacity: 0.65;
+  filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.25));
+}
+
+@keyframes spinLeafRing {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.rotating-dashed-ring {
+  width: 100%;
+  height: 100%;
+  animation: spinLeafRing 38s linear infinite;
+  transform-origin: center center;
+}
+
+/* Reduced Motion Override */
+@media (prefers-reduced-motion: reduce) {
+  .floating-grain-particle {
+    animation: none !important;
+    display: none;
+  }
+  .rotating-dashed-ring {
+    animation: none !important;
+  }
+}
+
+@media (max-width: 600px) {
+  .rotating-leaf-ring-wrap {
+    width: 110px;
+    height: 110px;
+    right: -20px;
+    opacity: 0.45;
+  }
+}

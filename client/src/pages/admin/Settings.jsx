@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
 import api from '../../api';
+import AnimatedPage from '../../components/AnimatedPage';
+import SkeletonLoader from '../../components/SkeletonLoader';
 import './Settings.css';
 
 export default function AdminSettings() {
@@ -98,7 +101,7 @@ export default function AdminSettings() {
   const sampleCreditAmount = Math.floor(sampleMealCost * (settings.wallet_percent / 100));
 
   return (
-    <div className="admin-settings-page">
+    <AnimatedPage className="admin-settings-page">
       <div className="settings-header">
         <h1 className="page-title">Mess Policy & Timing Settings</h1>
         <p className="page-subtitle">Configure slot timings, skip cutoffs, rebate percentages, and kitchen buffers.</p>
@@ -251,6 +254,6 @@ export default function AdminSettings() {
           </form>
         </>
       )}
-    </div>
+    </AnimatedPage>
   );
 }

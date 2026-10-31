@@ -1,6 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import confetti from 'canvas-confetti';
 import api from '../../api';
 import { useAuth } from '../../contexts/AuthContext';
+import AnimatedCoverBanner from '../../components/AnimatedCoverBanner';
+import AnimatedPage from '../../components/AnimatedPage';
+import AnimatedCounter from '../../components/AnimatedCounter';
+import CountdownRing from '../../components/CountdownRing';
+import Coin from '../../components/art/Coin';
+import DishImage from '../../components/DishImage';
+import SkeletonLoader from '../../components/SkeletonLoader';
 import './Home.css';
 
 export default function StudentHome() {
@@ -11,6 +20,9 @@ export default function StudentHome() {
   const [meals, setMeals] = useState([]);
   const [walletInfo, setWalletInfo] = useState({ balance_paise: 0, wallet_percent: 30 });
   const [actionLoading, setActionLoading] = useState(null);
+  const [flyingCoins, setFlyingCoins] = useState([]);
+
+  const walletChipRef = useRef(null);
 
   async function loadData() {
     try {
@@ -61,27 +73,53 @@ export default function StudentHome() {
     return () => clearInterval(timer);
   }, []);
 
-  function formatCountdown(totalSec) {
-    if (!totalSec || totalSec <= 0) return '00:00';
-    const hrs = Math.floor(totalSec / 3600);
-    const mins = Math.floor((totalSec % 3600) / 60);
-    const secs = totalSec % 60;
-    if (hrs > 0) {
-      return `${hrs}h ${mins.toString().padStart(2, '0')}m ${secs.toString().padStart(2, '0')}s`;
-    }
-    return `${mins.toString().padStart(2, '0')}m ${secs.toString().padStart(2, '0')}s`;
-  }
-
-  async function handleSkip(meal) {
+  async function handleSkip(meal, e) {
     const creditRupees = (meal.credit_paise / 100).toFixed(0);
     const confirmed = window.confirm(
       `Are you sure you want to skip ${meal.meal_type.toUpperCase()}? ₹${creditRupees} will be credited to your mess wallet.`
     );
     if (!confirmed) return;
 
+    // Get trigger button coordinates for flying coin
+    const btnRect = e?.currentTarget?.getBoundingClientRect();
+    const walletRect = walletChipRef.current?.getBoundingClientRect();
+
     setActionLoading(meal.id);
     try {
       await api.post('/student/skips', { meal_id: meal.id });
+
+      // Trigger celebration confetti
+      if (btnRect) {
+        confetti({
+          particleCount: 36,
+          spread: 60,
+          origin: {
+            x: (btnRect.left + btnRect.width / 2) / window.innerWidth,
+            y: (btnRect.top + btnRect.height / 2) / window.innerHeight
+          },
+          colors: ['#15803d', '#4cae4c', '#F2B01E', '#EAF3DE']
+        });
+      }
+
+      // Trigger flying coin animation towards wallet chip
+      if (btnRect && walletRect) {
+        const coinId = Date.now();
+        setFlyingCoins(prev => [
+          ...prev,
+          {
+            id: coinId,
+            startX: btnRect.left + btnRect.width / 2 - 14,
+            startY: btnRect.top + btnRect.height / 2 - 14,
+            endX: walletRect.left + 24,
+            endY: walletRect.top + walletRect.height / 2 - 14
+          }
+        ]);
+
+        setTimeout(() => {
+          setFlyingCoins(prev => prev.filter(c => c.id !== coinId));
+        }, 850);
+      }
+
       await loadData();
     } catch (err) {
       alert(err.response?.data?.error || 'Failed to skip meal. The cutoff may have passed.');
@@ -118,55 +156,73 @@ export default function StudentHome() {
   };
 
   return (
-    <div className="student-home">
-      {/* Banner */}
-      <div className="banner-container">
-        <img
-          src="/grainzero-cover.png"
-          alt="GrainZero – Zero waste, every meal"
-          className="cover-banner"
-        />
-      </div>
+    <AnimatedPage className="student-home">
+      {/* Animated Cover Banner with floating grains and rotating leaf ring */}
+      <AnimatedCoverBanner />
 
-      {/* Greeting & Wallet Chip */}
+      {/* Greeting & Animated Wallet Chip */}
       <div className="home-hero">
         <div className="hero-text">
           <h1 className="hero-greeting">Hello, {user?.name || 'Student'}! 👋</h1>
           <p className="hero-info">
-            Skip a meal before cutoff and earn <span className="highlight-tag">{walletInfo.wallet_percent}%</span> of its cost back into your wallet.
+            Skip a meal before cutoff and earn{' '}
+            <span className="highlight-tag">{walletInfo.wallet_percent}%</span> of its cost back into your wallet.
           </p>
         </div>
-        <div className="hero-wallet-chip">
-          <span className="chip-icon">💰</span>
+        <div id="wallet-chip-target" ref={walletChipRef} className="hero-wallet-chip">
+          <Coin size={32} />
           <div className="chip-content">
-            <span className="chip-label">Wallet Balance</span>
-            <span className="chip-value">₹{(walletInfo.balance_paise / 100).toFixed(2)}</span>
+            <span className="chip-label">Mess Wallet</span>
+            <span className="chip-value">
+              <AnimatedCounter
+                prefix="₹"
+                value={walletInfo.balance_paise / 100}
+                decimals={2}
+                duration={900}
+              />
+            </span>
           </div>
         </div>
       </div>
 
-      {/* Tabs */}
+      {/* Day Tabs with shared layoutId pill */}
       <div className="meal-day-tabs">
         <button
           type="button"
           className={`day-tab ${activeTab === 'today' ? 'active' : ''}`}
           onClick={() => setActiveTab('today')}
         >
-          📅 Today's Meals
+          <span>📅 Today's Meals</span>
+          {activeTab === 'today' && (
+            <motion.div
+              layoutId="student-active-day-tab"
+              className="day-tab-underline"
+              transition={{ type: 'spring', stiffness: 450, damping: 35 }}
+            />
+          )}
         </button>
         <button
           type="button"
           className={`day-tab ${activeTab === 'tomorrow' ? 'active' : ''}`}
           onClick={() => setActiveTab('tomorrow')}
         >
-          ⏭️ Tomorrow's Meals
+          <span>⏭️ Tomorrow's Meals</span>
+          {activeTab === 'tomorrow' && (
+            <motion.div
+              layoutId="student-active-day-tab"
+              className="day-tab-underline"
+              transition={{ type: 'spring', stiffness: 450, damping: 35 }}
+            />
+          )}
         </button>
       </div>
 
       {/* Meals Grid */}
       {loading ? (
-        <div className="loading-state">
-          <span className="spin-icon">⏳</span> Loading meal schedule...
+        <div className="meals-grid">
+          {[1, 2, 3, 4].map(n => (
+            <SkeletonLoader key={n} type="card" height={220} />
+          ))}
         </div>
       ) : error ? (
         <div className="alert alert-error">{error}</div>
@@ -177,16 +233,34 @@ export default function StudentHome() {
           <p>The mess management has not finalized the meal plan for this date yet. Check back soon!</p>
         </div>
       ) : (
-        <div className="meals-grid">
+        <motion.div
+          className="meals-grid"
+          initial="hidden"
+          animate="visible"
+          variants={{
+            hidden: { opacity: 0 },
+            visible: {
+              opacity: 1,
+              transition: { staggerChildren: 0.08 }
+            }
+          }}
+        >
           {filteredMeals.map(meal => {
             const costRupees = (meal.cost_paise / 100).toFixed(0);
             const creditRupees = (meal.credit_paise / 100).toFixed(0);
             const isProcessing = actionLoading === meal.id;
+            const isCutoffPassed = !meal.canSkip && !meal.skipped;
 
             return (
-              <div
+              <motion.div
                 key={meal.id}
-                className={`meal-plan-card card ${meal.skipped ? 'card-skipped' : ''}`}
+                variants={{
+                  hidden: { opacity: 0, y: 16 },
+                  visible: { opacity: 1, y: 0, transition: { duration: 0.28 } }
+                }}
+                className={`meal-plan-card card ${
+                  meal.skipped ? 'card-skipped' : ''
+                } ${isCutoffPassed ? 'card-locked' : ''}`}
               >
                 {/* Header */}
                 <div className="meal-header">
@@ -202,15 +276,16 @@ export default function StudentHome() {
                   <div className="meal-cost-pill">₹{costRupees}</div>
                 </div>
 
-                {/* Dishes */}
+                {/* Dishes with warm fallback illustrations */}
                 <div className="meal-dishes-wrap">
                   <span className="dishes-label">Menu Dishes:</span>
                   <div className="dishes-chips">
                     {meal.dishes && meal.dishes.length > 0 ? (
                       meal.dishes.map(d => (
-                        <span key={d.id} className="dish-chip">
-                          {d.name}
-                        </span>
+                        <div key={d.id} className="dish-chip-badge">
+                          <DishImage size={24} className="dish-chip-icon" />
+                          <span className="dish-chip-text">{d.name}</span>
+                        </div>
                       ))
                     ) : (
                       <span className="no-dishes">Dishes to be announced</span>
@@ -218,33 +293,29 @@ export default function StudentHome() {
                   </div>
                 </div>
 
-                {/* Cutoff & Live Countdown */}
+                {/* Cutoff & Circular Countdown Ring */}
                 <div className="meal-cutoff-box">
-                  <div className="cutoff-time-text">
-                    ⏰ Cutoff: <strong>{meal.slot?.cutoff_time || '—'}</strong>
-                  </div>
-                  {meal.canSkip ? (
-                    <div className="countdown-live active">
-                      <span>⏳</span> Closes in <strong>{formatCountdown(meal.seconds_left)}</strong>
-                    </div>
-                  ) : (
-                    <div className="countdown-live expired">
-                      <span>🔒</span> Cutoff passed
-                    </div>
-                  )}
+                  <CountdownRing
+                    secondsLeft={meal.seconds_left}
+                    cutoffTime={meal.slot?.cutoff_time}
+                  />
                 </div>
 
                 {/* Action Button */}
                 <div className="meal-card-action">
                   {meal.skipped ? (
                     <div className="skipped-status-box">
-                      <div className="skipped-badge">
-                        <span>✓</span> Skipped (+₹{creditRupees} credited)
-                      </div>
+                      <motion.div
+                        className="skipped-badge"
+                        initial={{ scale: 0.9, opacity: 0 }}
+                        animate={{ scale: 1, opacity: 1 }}
+                      >
+                        <span className="skipped-check">✓</span> Skipped, ₹{creditRupees} credited
+                      </motion.div>
                       {meal.canSkip && (
                         <button
                           type="button"
-                          className="btn btn-secondary undo-btn"
+                          className="btn btn-outline undo-btn"
                           disabled={isProcessing}
                           onClick={() => handleUndo(meal)}
                         >
@@ -255,23 +326,51 @@ export default function StudentHome() {
                   ) : meal.canSkip ? (
                     <button
                       type="button"
-                      className="btn btn-primary skip-btn"
+                      className="btn btn-primary skip-btn pulse-skip-btn"
                       disabled={isProcessing}
-                      onClick={() => handleSkip(meal)}
+                      onClick={(e) => handleSkip(meal, e)}
                     >
-                      {isProcessing ? 'Saving…' : `Skip this meal (+₹${creditRupees})`}
+                      {isProcessing ? 'Processing…' : `Skip this meal (+₹${creditRupees})`}
                     </button>
                   ) : (
-                    <button type="button" className="btn btn-disabled" disabled>
-                      Cutoff passed
-                    </button>
+                    <div className="cutoff-passed-banner">
+                      <span className="lock-icon">🔒</span> Cutoff Passed
+                    </div>
                   )}
                 </div>
-              </div>
+              </motion.div>
             );
           })}
-        </div>
+        </motion.div>
       )}
-    </div>
+
+      {/* Flying coins overlay */}
+      <AnimatePresence>
+        {flyingCoins.map(coin => (
+          <motion.div
+            key={coin.id}
+            initial={{
+              position: 'fixed',
+              left: coin.startX,
+              top: coin.startY,
+              scale: 0.8,
+              opacity: 1,
+              zIndex: 9999,
+              pointerEvents: 'none'
+            }}
+            animate={{
+              left: coin.endX,
+              top: coin.endY,
+              scale: [0.8, 1.4, 1],
+              opacity: [1, 1, 0.2]
+            }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.75, ease: [0.16, 1, 0.3, 1] }}
+          >
+            <Coin size={28} />
+          </motion.div>
+        ))}
+      </AnimatePresence>
+    </AnimatedPage>
   );
 }

@@ -1,5 +1,9 @@
 import React, { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import api from '../../api';
+import AnimatedPage from '../../components/AnimatedPage';
+import DishImage from '../../components/DishImage';
+import SkeletonLoader from '../../components/SkeletonLoader';
 import './MenuManager.css';
 
 export default function AdminMenuManager() {
@@ -117,7 +121,7 @@ export default function AdminMenuManager() {
   }
 
   return (
-    <div className="admin-menu-manager-page">
+    <AnimatedPage className="admin-menu-manager-page">
       <div className="manager-header">
         <div>
           <h1 className="page-title">Menu Manager & Production Registry</h1>
@@ -152,18 +156,35 @@ export default function AdminMenuManager() {
       </div>
 
       {loading ? (
-        <div className="loading-state">⏳ Loading menu plan for {date}...</div>
+        <div className="menu-manager-grid">
+          {[1, 2, 3, 4].map(n => <SkeletonLoader key={n} type="card" height={220} />)}
+        </div>
       ) : error ? (
         <div className="alert alert-error">{error}</div>
       ) : (
-        <div className="menu-manager-grid">
+        <motion.div
+          className="menu-manager-grid"
+          initial="hidden"
+          animate="visible"
+          variants={{
+            hidden: { opacity: 0 },
+            visible: { opacity: 1, transition: { staggerChildren: 0.08 } }
+          }}
+        >
           {slots.map(slot => {
             const meal = menu.find(m => m.meal_type === slot.meal_type);
             const costRupees = (slot.cost_paise / 100).toFixed(0);
             const dishInput = dishInputs[meal?.id] || '';
 
             return (
-              <div key={slot.meal_type} className="meal-edit-card card">
+              <motion.div
+                key={slot.meal_type}
+                variants={{
+                  hidden: { opacity: 0, y: 14 },
+                  visible: { opacity: 1, y: 0, transition: { duration: 0.25 } }
+                }}
+                className="meal-edit-card card"
+              >
                 <div className="card-top-row">
                   <div>
                     <h3 className="meal-card-title">{slot.meal_type.toUpperCase()}</h3>
@@ -193,8 +214,14 @@ export default function AdminMenuManager() {
                       <div className="dish-chips-list">
                         {meal.dishes && meal.dishes.length > 0 ? (
                           meal.dishes.map(d => (
-                            <span key={d.id} className="dish-chip-removable">
-                              {d.name}
+                            <motion.span
+                              key={d.id}
+                              className="dish-chip-removable"
+                              initial={{ scale: 0.9, opacity: 0 }}
+                              animate={{ scale: 1, opacity: 1 }}
+                            >
+                              <DishImage size={20} />
+                              <span>{d.name}</span>
                               <button
                                 type="button"
                                 className="remove-dish-btn"
@@ -203,7 +230,7 @@ export default function AdminMenuManager() {
                               >
                                 ✕
                               </button>
-                            </span>
+                            </motion.span>
                           ))
                         ) : (
                           <span className="no-dishes-note">No dishes added yet.</span>
@@ -246,11 +273,11 @@ export default function AdminMenuManager() {
                     </div>
                   </>
                 )}
-              </div>
+              </motion.div>
             );
           })}
-        </div>
+        </motion.div>
       )}
-    </div>
+    </AnimatedPage>
   );
 }

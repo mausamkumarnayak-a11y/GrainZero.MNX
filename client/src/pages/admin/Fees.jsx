@@ -1,5 +1,9 @@
 import React, { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
 import api from '../../api';
+import AnimatedPage from '../../components/AnimatedPage';
+import AnimatedCounter from '../../components/AnimatedCounter';
+import SkeletonLoader from '../../components/SkeletonLoader';
 import './Fees.css';
 
 export default function AdminFees() {
@@ -67,7 +71,7 @@ export default function AdminFees() {
   );
 
   return (
-    <div className="admin-fees-page">
+    <AnimatedPage className="admin-fees-page">
       <div className="fees-header">
         <div>
           <h1 className="page-title">Semester Fee Billing & Wallet Settlement</h1>
@@ -212,6 +216,6 @@ export default function AdminFees() {
           </div>
         </>
       )}
-    </div>
+    </AnimatedPage>
   );
 }

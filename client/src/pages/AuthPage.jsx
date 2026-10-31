@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { motion } from 'framer-motion';
 import { useAuth } from '../contexts/AuthContext';
+import AnimatedCoverBanner from '../components/AnimatedCoverBanner';
 import api from '../api';
 import './AuthPage.css';
 
@@ -82,17 +84,27 @@ export default function AuthPage() {
 
   return (
     <div className="auth-page">
-      <div className="auth-card card">
-        {/* Logo */}
-        <div className="auth-logo-wrap">
-          <img src="/grainzero-logo.png" alt="GrainZero" className="auth-logo" />
-        </div>
+      <motion.div
+        className="auth-wrapper"
+        initial={{ opacity: 0, y: 15 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.3 }}
+        style={{ width: '100%', maxWidth: 440, display: 'flex', flexDirection: 'column', gap: '1rem' }}
+      >
+        {/* Animated Cover Banner with floating grains and rotating leaf ring */}
+        <AnimatedCoverBanner />
 
-        <p className="auth-tagline">Make every grain count</p>
+        <div className="auth-card card">
+          {/* Logo */}
+          <div className="auth-logo-wrap">
+            <img src="/grainzero-logo.png" alt="GrainZero" className="auth-logo" />
+          </div>
 
-        {/* Tabs */}
-        <div className="auth-tabs">
-          <button
+          <p className="auth-tagline">Make every grain count</p>
+
+          {/* Tabs */}
+          <div className="auth-tabs">
+            <button
             type="button"
             className={`auth-tab ${tab === 'login' ? 'active' : ''}`}
             onClick={() => handleTab('login')}
@@ -278,6 +290,7 @@ export default function AuthPage() {
           </div>
         </div>
       </div>
-    </div>
-  );
+    </motion.div>
+  </div>
+);
 }

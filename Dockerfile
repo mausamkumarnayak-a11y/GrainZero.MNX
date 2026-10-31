@@ -30,3 +30,4 @@ EXPOSE 3001
 
 # Start unified application
 CMD ["node", "server/index.js"]
+

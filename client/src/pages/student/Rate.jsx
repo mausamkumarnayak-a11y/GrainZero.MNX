@@ -1,5 +1,11 @@
 import React, { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import confetti from 'canvas-confetti';
 import api from '../../api';
+import AnimatedPage from '../../components/AnimatedPage';
+import DishImage from '../../components/DishImage';
+import Sparkle from '../../components/art/Sparkle';
+import SkeletonLoader from '../../components/SkeletonLoader';
 import './Rate.css';
 
 export default function StudentRate() {
@@ -7,6 +13,8 @@ export default function StudentRate() {
   const [error, setError] = useState('');
   const [meals, setMeals] = useState([]);
   const [ratingsForm, setRatingsForm] = useState({}); // dish_id -> { stars, comment, submitting, saved }
+  const [toastMessage, setToastMessage] = useState('');
+  const [sparkleDishId, setSparkleDishId] = useState(null);
 
   async function loadRateableMeals() {
     try {
@@ -15,7 +23,6 @@ export default function StudentRate() {
       const data = res.data || [];
       setMeals(data);
 
-      // Pre-fill existing ratings
       const initialForm = {};
       data.forEach(m => {
         m.dishes.forEach(d => {
@@ -41,6 +48,9 @@ export default function StudentRate() {
   }, []);
 
   function handleStarClick(dishId, starValue) {
+    setSparkleDishId(dishId);
+    setTimeout(() => setSparkleDishId(null), 600);
+
     setRatingsForm(prev => ({
       ...prev,
       [dishId]: {
@@ -63,12 +73,14 @@ export default function StudentRate() {
     }));
   }
 
-  async function handleSubmitRating(dishId) {
+  async function handleSubmitRating(dishId, e) {
     const dishData = ratingsForm[dishId];
     if (!dishData || !dishData.stars) {
       alert('Please select at least 1 star before submitting.');
       return;
     }
+
+    const rect = e?.currentTarget?.getBoundingClientRect();
 
     setRatingsForm(prev => ({
       ...prev,
@@ -86,6 +98,24 @@ export default function StudentRate() {
         ...prev,
         [dishId]: { ...prev[dishId], submitting: false, saved: true }
       }));
+
+      // Fire canvas-confetti
+      if (rect) {
+        confetti({
+          particleCount: 40,
+          spread: 60,
+          origin: {
+            x: (rect.left + rect.width / 2) / window.innerWidth,
+            y: (rect.top + rect.height / 2) / window.innerHeight
+          },
+          colors: ['#F2B01E', '#15803d', '#4cae4c', '#EAF3DE']
+        });
+      }
+
+      // Show friendly slide-in toast
+      setToastMessage('⭐ Feedback recorded! Your rating helps the kitchen optimize cooking.');
+      setTimeout(() => setToastMessage(''), 3500);
+
     } catch (err) {
       alert(err.response?.data?.error || 'Failed to save rating.');
       setRatingsForm(prev => ({
@@ -103,30 +133,49 @@ export default function StudentRate() {
   };
 
   return (
-    <div className="student-rate-page">
+    <AnimatedPage className="student-rate-page">
       <div className="rate-header">
         <h1 className="page-title">Rate Completed Meals</h1>
         <p className="page-subtitle">
-          Your feedback directly informs mess cooking quantities and helps eliminate food waste.
+          Your honest ratings directly tune kitchen preparation numbers and eliminate hostel food waste.
         </p>
       </div>
 
       {loading ? (
-        <div className="loading-state">⏳ Loading completed meals...</div>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+          {[1, 2].map(i => (
+            <SkeletonLoader key={i} type="card" height={180} />
+          ))}
+        </div>
       ) : error ? (
         <div className="alert alert-error">{error}</div>
       ) : meals.length === 0 ? (
         <div className="empty-state card">
-          <span>🍲</span>
+          <span className="empty-icon">🍲</span>
           <h3>No Meals Ready to Rate</h3>
           <p>
-            Meals appear here once their dining slot has completed. Note that meals you skipped cannot be rated.
+            Meals appear here once their dining time slot has ended. Skipped meals cannot be rated.
           </p>
         </div>
       ) : (
-        <div className="rate-meals-list">
+        <motion.div
+          className="rate-meals-list"
+          initial="hidden"
+          animate="visible"
+          variants={{
+            hidden: { opacity: 0 },
+            visible: { opacity: 1, transition: { staggerChildren: 0.1 } }
+          }}
+        >
           {meals.map(m => (
-            <div key={m.id} className="rate-meal-card card">
+            <motion.div
+              key={m.id}
+              variants={{
+                hidden: { opacity: 0, y: 16 },
+                visible: { opacity: 1, y: 0, transition: { duration: 0.28 } }
+              }}
+              className="rate-meal-card card"
+            >
               <div className="rate-meal-header">
                 <span className="rate-meal-emoji">{MEAL_ICONS[m.meal_type] || '🍽️'}</span>
                 <div>
@@ -143,36 +192,65 @@ export default function StudentRate() {
                 {m.dishes.map(dish => {
                   const f = ratingsForm[dish.id] || { stars: 0, comment: '', submitting: false, saved: false };
                   const charsLeft = 300 - (f.comment?.length || 0);
+                  const isSparkling = sparkleDishId === dish.id;
 
                   return (
                     <div key={dish.id} className={`dish-rating-card ${f.saved ? 'is-saved' : ''}`}>
                       <div className="dish-top-bar">
-                        <h4 className="dish-name-heading">{dish.name}</h4>
-                        {f.saved && <span className="saved-badge">✓ Submitted</span>}
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
+                          <DishImage size={36} />
+                          <h4 className="dish-name-heading">{dish.name}</h4>
+                        </div>
+                        {f.saved && (
+                          <motion.span
+                            initial={{ scale: 0.8 }}
+                            animate={{ scale: 1 }}
+                            className="saved-badge"
+                          >
+                            ✓ Submitted
+                          </motion.span>
+                        )}
                       </div>
 
-                      {/* Interactive 5-Star Input */}
-                      <div className="star-rating-row">
-                        {[1, 2, 3, 4, 5].map(star => (
-                          <button
-                            key={star}
-                            type="button"
-                            className={`star-btn ${star <= f.stars ? 'active' : ''}`}
-                            onClick={() => handleStarClick(dish.id, star)}
-                            aria-label={`${star} star`}
+                      {/* Animated 5-Star Input */}
+                      <div className="star-rating-row" style={{ position: 'relative' }}>
+                        {[1, 2, 3, 4, 5].map(star => {
+                          const isActive = star <= f.stars;
+                          return (
+                            <motion.button
+                              key={star}
+                              type="button"
+                              className={`star-btn ${isActive ? 'active' : ''}`}
+                              onClick={() => handleStarClick(dish.id, star)}
+                              whileHover={{ scale: 1.35 }}
+                              whileTap={{ scale: 0.85 }}
+                              aria-label={`${star} star`}
+                            >
+                              ★
+                            </motion.button>
+                          );
+                        })}
+
+                        {isSparkling && (
+                          <motion.div
+                            initial={{ scale: 0, opacity: 1 }}
+                            animate={{ scale: 1.5, opacity: 0 }}
+                            transition={{ duration: 0.55 }}
+                            style={{ position: 'absolute', right: 40, top: -6 }}
                           >
-                            ★
-                          </button>
-                        ))}
+                            <Sparkle size={26} color="#F2B01E" />
+                          </motion.div>
+                        )}
+
                         <span className="star-score-label">
                           {f.stars > 0 ? `${f.stars} / 5` : 'Tap to rate'}
                         </span>
                       </div>
 
-                      {/* Optional Comment with character counter */}
+                      {/* Comment Input */}
                       <div className="comment-input-wrap">
                         <textarea
-                          placeholder="Optional feedback (taste, quantity, texture)..."
+                          placeholder="Optional comments (freshness, salt, texture, spices)..."
                           value={f.comment}
                           onChange={e => handleCommentChange(dish.id, e.target.value)}
                           rows={2}
@@ -181,12 +259,12 @@ export default function StudentRate() {
                         <div className="char-counter">{charsLeft} characters remaining</div>
                       </div>
 
-                      {/* Submit Button */}
+                      {/* Submit Button with hover lift & press scale */}
                       <button
                         type="button"
                         className="btn btn-primary submit-rating-btn"
                         disabled={f.submitting || f.stars === 0}
-                        onClick={() => handleSubmitRating(dish.id)}
+                        onClick={(e) => handleSubmitRating(dish.id, e)}
                       >
                         {f.submitting ? 'Saving…' : f.saved ? 'Update Rating' : 'Submit Rating'}
                       </button>
@@ -194,10 +272,25 @@ export default function StudentRate() {
                   );
                 })}
               </div>
-            </div>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
       )}
-    </div>
+
+      {/* Floating friendly toast */}
+      <AnimatePresence>
+        {toastMessage && (
+          <motion.div
+            className="floating-toast"
+            initial={{ opacity: 0, y: 30, x: '-50%' }}
+            animate={{ opacity: 1, y: 0, x: '-50%' }}
+            exit={{ opacity: 0, y: 20, x: '-50%' }}
+            transition={{ type: 'spring', damping: 25, stiffness: 300 }}
+          >
+            <span>{toastMessage}</span>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </AnimatedPage>
   );
 }

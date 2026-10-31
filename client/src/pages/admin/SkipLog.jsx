@@ -1,5 +1,9 @@
 import React, { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
 import api from '../../api';
+import AnimatedPage from '../../components/AnimatedPage';
+import AnimatedCounter from '../../components/AnimatedCounter';
+import SkeletonLoader from '../../components/SkeletonLoader';
 import './SkipLog.css';
 
 export default function AdminSkipLog() {
@@ -74,7 +78,7 @@ export default function AdminSkipLog() {
   );
 
   return (
-    <div className="admin-skip-log-page">
+    <AnimatedPage className="admin-skip-log-page">
       {/* Non-printed header controls */}
       <div className="skip-log-controls no-print">
         <div>
@@ -263,6 +267,6 @@ export default function AdminSkipLog() {
           </div>
         </>
       )}
-    </div>
+    </AnimatedPage>
   );
 }
