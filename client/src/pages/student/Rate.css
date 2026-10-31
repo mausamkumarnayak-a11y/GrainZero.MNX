@@ -1,0 +1,166 @@
+.student-rate-page {
+  max-width: 960px;
+  margin: 0 auto;
+  padding-bottom: 3rem;
+}
+
+.rate-header {
+  margin-bottom: 1.5rem;
+}
+
+.rate-meals-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.rate-meal-card {
+  padding: 1.3rem;
+  border-radius: 12px;
+  border: 1px solid #e5e7eb;
+  background: #ffffff;
+}
+
+.rate-meal-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1.25rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid #f3f4f6;
+}
+
+.rate-meal-emoji {
+  font-size: 1.8rem;
+}
+
+.rate-meal-title {
+  margin: 0;
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #1f2937;
+}
+
+.rate-meal-date {
+  color: #166534;
+}
+
+.rate-meal-timing {
+  font-size: 0.8rem;
+  color: #6b7280;
+}
+
+.rate-dishes-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.25rem;
+}
+
+.dish-rating-card {
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  padding: 1.1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.dish-rating-card.is-saved {
+  border-color: #86efac;
+  background: #f0fdf4;
+}
+
+.dish-top-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.75rem;
+}
+
+.dish-name-heading {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #1f2937;
+}
+
+.saved-badge {
+  background: #dcfce7;
+  color: #15803d;
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+}
+
+/* Star rating input */
+.star-rating-row {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin-bottom: 0.75rem;
+}
+
+.star-btn {
+  background: none;
+  border: none;
+  font-size: 1.8rem;
+  color: #d1d5db;
+  cursor: pointer;
+  padding: 0;
+  line-height: 1;
+  transition: transform 0.1s, color 0.1s;
+}
+
+.star-btn:hover {
+  transform: scale(1.15);
+  color: #f59e0b;
+}
+
+.star-btn.active {
+  color: #f59e0b;
+}
+
+.star-score-label {
+  font-size: 0.85rem;
+  color: #6b7280;
+  margin-left: 0.4rem;
+  font-weight: 600;
+}
+
+/* Comment Box */
+.comment-input-wrap {
+  margin-bottom: 0.85rem;
+}
+
+.comment-input-wrap textarea {
+  width: 100%;
+  padding: 0.5rem 0.65rem;
+  border-radius: 6px;
+  border: 1px solid #d1d5db;
+  font-size: 0.82rem;
+  resize: vertical;
+  box-sizing: border-box;
+}
+
+.comment-input-wrap textarea:focus {
+  outline: none;
+  border-color: #16a34a;
+}
+
+.char-counter {
+  font-size: 0.72rem;
+  color: #9ca3af;
+  text-align: right;
+  margin-top: 0.2rem;
+}
+
+.submit-rating-btn {
+  width: 100%;
+  padding: 0.55rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  border-radius: 6px;
+}
+

@@ -1,0 +1,107 @@
+.admin-fees-page {
+  max-width: 1050px;
+  margin: 0 auto;
+  padding-bottom: 3rem;
+}
+
+.fees-header {
+  margin-bottom: 1.5rem;
+}
+
+.generate-card {
+  padding: 1.25rem 1.5rem;
+  background: #ffffff;
+  border-radius: 12px;
+  border: 1px solid #e5e7eb;
+  margin-bottom: 1.5rem;
+}
+
+.gen-inputs-wrap {
+  display: flex;
+  align-items: flex-end;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.gen-inputs-wrap .field {
+  flex: 1;
+  min-width: 260px;
+  margin: 0;
+}
+
+.gen-inputs-wrap label {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #374151;
+  display: block;
+  margin-bottom: 0.35rem;
+}
+
+.gen-inputs-wrap input {
+  width: 100%;
+  padding: 0.55rem 0.75rem;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  box-sizing: border-box;
+}
+
+.gen-btn {
+  padding: 0.55rem 1.25rem;
+  font-size: 0.88rem;
+  white-space: nowrap;
+}
+
+.gen-hint {
+  font-size: 0.75rem;
+  color: #9ca3af;
+  margin: 0.45rem 0 0 0;
+}
+
+/* Table Card */
+.fee-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.86rem;
+}
+
+.fee-table th {
+  padding: 0.7rem 0.6rem;
+  text-align: left;
+  border-bottom: 2px solid #e5e7eb;
+  color: #6b7280;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+}
+
+.fee-table td {
+  padding: 0.7rem 0.6rem;
+  border-bottom: 1px solid #f3f4f6;
+  color: #374151;
+}
+
+.inv-id {
+  font-family: monospace;
+  font-weight: 700;
+  color: #166534;
+}
+
+.session-badge {
+  background: #f0fdf4;
+  color: #166534;
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+
+.due-amount {
+  color: #111827;
+  font-size: 0.95rem;
+}
+
+.table-subtitle {
+  font-size: 0.78rem;
+  color: #6b7280;
+}
+

@@ -1,0 +1,265 @@
+.student-wallet-page {
+  max-width: 960px;
+  margin: 0 auto;
+  padding-bottom: 3rem;
+}
+
+.wallet-header {
+  margin-bottom: 1.5rem;
+}
+
+.page-title {
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: #166534;
+  margin: 0 0 0.25rem 0;
+}
+
+.page-subtitle {
+  color: #6b7280;
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+.wallet-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.25rem;
+  margin-bottom: 1.5rem;
+}
+
+.wallet-stat-card {
+  padding: 1.3rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border-radius: 12px;
+  border: 1px solid #e5e7eb;
+}
+
+.wallet-stat-card.card-highlight {
+  background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+  border-color: #86efac;
+}
+
+.card-badge {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 700;
+  color: #166534;
+  margin-bottom: 0.5rem;
+}
+
+.stat-amount-wrap {
+  display: flex;
+  align-items: baseline;
+  gap: 0.2rem;
+  margin-bottom: 0.5rem;
+}
+
+.stat-amount-wrap .currency {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #166534;
+}
+
+.amount-hero {
+  font-size: 2.2rem;
+  font-weight: 800;
+  color: #14532d;
+  line-height: 1;
+}
+
+.stat-amount-wrap.secondary .currency,
+.stat-amount-wrap.secondary .amount-val {
+  color: #374151;
+  font-size: 1.8rem;
+  font-weight: 700;
+}
+
+.stat-amount-wrap.count .unit {
+  font-size: 1rem;
+  color: #6b7280;
+  margin-left: 0.35rem;
+  font-weight: 500;
+}
+
+.card-hint {
+  font-size: 0.8rem;
+  color: #6b7280;
+  margin: 0;
+}
+
+.net-due-banner {
+  background: #ffffff;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  padding: 0.4rem 0.65rem;
+  font-size: 0.82rem;
+  color: #1f2937;
+  margin-top: 0.4rem;
+}
+
+.net-due-banner strong {
+  color: #16a34a;
+}
+
+/* Progress card */
+.fee-progress-card {
+  padding: 1.25rem 1.5rem;
+  margin-bottom: 1.5rem;
+  border-radius: 12px;
+  border: 1px solid #e5e7eb;
+}
+
+.progress-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.9rem;
+  margin-bottom: 0.6rem;
+  color: #374151;
+}
+
+.progress-pct {
+  font-weight: 700;
+  color: #16a34a;
+}
+
+.progress-track {
+  width: 100%;
+  height: 12px;
+  background: #e5e7eb;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #22c55e, #16a34a);
+  border-radius: 6px;
+  transition: width 0.5s ease;
+}
+
+/* Transactions Table */
+.wallet-section {
+  padding: 1.5rem;
+  border-radius: 12px;
+  border: 1px solid #e5e7eb;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.25rem;
+}
+
+.section-header h3 {
+  margin: 0;
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #1f2937;
+}
+
+.count-tag {
+  background: #f3f4f6;
+  color: #4b5563;
+  font-size: 0.78rem;
+  padding: 0.2rem 0.55rem;
+  border-radius: 20px;
+  font-weight: 600;
+}
+
+.tx-table-wrap {
+  overflow-x: auto;
+}
+
+.tx-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.88rem;
+}
+
+.tx-table th {
+  text-align: left;
+  padding: 0.75rem 0.6rem;
+  border-bottom: 2px solid #e5e7eb;
+  color: #6b7280;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.tx-table td {
+  padding: 0.75rem 0.6rem;
+  border-bottom: 1px solid #f3f4f6;
+  color: #374151;
+}
+
+.tx-date {
+  color: #6b7280;
+  font-size: 0.82rem;
+  white-space: nowrap;
+}
+
+.meal-tag {
+  background: #f0fdf4;
+  color: #166534;
+  padding: 0.2rem 0.45rem;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.tx-type-pill {
+  font-size: 0.75rem;
+  padding: 0.2rem 0.5rem;
+  border-radius: 20px;
+  font-weight: 600;
+}
+
+.tx-type-pill.skip_credit {
+  background: #dcfce7;
+  color: #15803d;
+}
+
+.tx-type-pill.skip_reversal {
+  background: #f3f4f6;
+  color: #6b7280;
+}
+
+.tx-type-pill.fee_deduction {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+.tx-amount {
+  font-weight: 700;
+  font-size: 0.95rem;
+}
+
+.tx-amount.credit {
+  color: #16a34a;
+}
+
+.tx-amount.reversal {
+  color: #9ca3af;
+}
+
+.tx-amount.deduction {
+  color: #dc2626;
+}
+
+.empty-history {
+  text-align: center;
+  padding: 2.5rem 1rem;
+  color: #9ca3af;
+}
+
+.empty-history span {
+  font-size: 2.5rem;
+  display: block;
+  margin-bottom: 0.5rem;
+}
+

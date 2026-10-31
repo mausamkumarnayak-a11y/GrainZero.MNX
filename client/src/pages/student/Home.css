@@ -1,0 +1,321 @@
+.student-home {
+  max-width: 960px;
+  margin: 0 auto;
+  padding-bottom: 3rem;
+}
+
+.banner-container {
+  width: 100%;
+  border-radius: var(--radius, 12px);
+  overflow: hidden;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+  margin-bottom: 1.5rem;
+  background: #0b3928;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.cover-banner {
+  width: 100%;
+  height: auto;
+  max-height: 280px;
+  object-fit: contain;
+  display: block;
+}
+
+.home-hero {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  background: #ffffff;
+  padding: 1.25rem 1.5rem;
+  border-radius: var(--radius, 12px);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+  border: 1px solid #e5e7eb;
+}
+
+.hero-greeting {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #166534;
+  margin: 0 0 0.3rem 0;
+}
+
+.hero-info {
+  margin: 0;
+  font-size: 0.9rem;
+  color: #4b5563;
+}
+
+.highlight-tag {
+  background: #dcfce7;
+  color: #15803d;
+  font-weight: 700;
+  padding: 0.15rem 0.4rem;
+  border-radius: 4px;
+}
+
+.hero-wallet-chip {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  padding: 0.65rem 1.1rem;
+  border-radius: 30px;
+}
+
+.chip-icon {
+  font-size: 1.6rem;
+}
+
+.chip-label {
+  display: block;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  color: #15803d;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.chip-value {
+  display: block;
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: #166534;
+}
+
+/* Tabs */
+.meal-day-tabs {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+  border-bottom: 2px solid #e5e7eb;
+  padding-bottom: 0.25rem;
+}
+
+.day-tab {
+  background: none;
+  border: none;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #6b7280;
+  padding: 0.6rem 1.2rem;
+  border-radius: 8px 8px 0 0;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.day-tab:hover {
+  color: #16a34a;
+}
+
+.day-tab.active {
+  color: #15803d;
+  border-bottom: 3px solid #16a34a;
+  background: #f0fdf4;
+}
+
+/* Meals Grid */
+.meals-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.25rem;
+}
+
+.meal-plan-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border-radius: var(--radius, 12px);
+  padding: 1.25rem;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.meal-plan-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+}
+
+.meal-plan-card.card-skipped {
+  border-color: #86efac;
+  background: #fcfdfd;
+}
+
+.meal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+}
+
+.meal-title-wrap {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.meal-emoji {
+  font-size: 1.7rem;
+}
+
+.meal-type-title {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #1f2937;
+}
+
+.meal-timing {
+  font-size: 0.8rem;
+  color: #6b7280;
+}
+
+.meal-cost-pill {
+  background: #dcfce7;
+  color: #166534;
+  font-weight: 800;
+  font-size: 0.95rem;
+  padding: 0.3rem 0.65rem;
+  border-radius: 20px;
+}
+
+.meal-dishes-wrap {
+  margin-bottom: 1.25rem;
+}
+
+.dishes-label {
+  display: block;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  color: #9ca3af;
+  font-weight: 600;
+  margin-bottom: 0.4rem;
+  letter-spacing: 0.4px;
+}
+
+.dishes-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.dish-chip {
+  background: #f3f4f6;
+  color: #374151;
+  font-size: 0.85rem;
+  padding: 0.3rem 0.65rem;
+  border-radius: 6px;
+  font-weight: 500;
+  border: 1px solid #e5e7eb;
+}
+
+.meal-cutoff-box {
+  background: #f9fafb;
+  border-radius: 8px;
+  padding: 0.6rem 0.85rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  font-size: 0.82rem;
+  border: 1px solid #f3f4f6;
+}
+
+.cutoff-time-text {
+  color: #4b5563;
+}
+
+.countdown-live.active {
+  color: #15803d;
+  font-weight: 600;
+}
+
+.countdown-live.expired {
+  color: #9ca3af;
+  font-weight: 600;
+}
+
+.meal-card-action {
+  margin-top: auto;
+}
+
+.skip-btn {
+  width: 100%;
+  padding: 0.7rem;
+  font-weight: 600;
+  border-radius: 8px;
+  background: #16a34a;
+  color: #ffffff;
+  border: none;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.skip-btn:hover {
+  background: #15803d;
+}
+
+.skipped-status-box {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.skipped-badge {
+  text-align: center;
+  background: #dcfce7;
+  color: #15803d;
+  font-weight: 700;
+  font-size: 0.88rem;
+  padding: 0.55rem;
+  border-radius: 8px;
+  border: 1px solid #86efac;
+}
+
+.undo-btn {
+  width: 100%;
+  padding: 0.45rem;
+  font-size: 0.8rem;
+  background: #f3f4f6;
+  border: 1px solid #d1d5db;
+  color: #4b5563;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.undo-btn:hover {
+  background: #e5e7eb;
+  color: #111827;
+}
+
+.btn-disabled {
+  width: 100%;
+  padding: 0.7rem;
+  font-weight: 600;
+  border-radius: 8px;
+  background: #e5e7eb;
+  color: #9ca3af;
+  border: none;
+  cursor: not-allowed;
+}
+
+.loading-state, .empty-state {
+  text-align: center;
+  padding: 3rem 1.5rem;
+  color: #6b7280;
+}
+
+
+.empty-icon {
+  font-size: 3rem;
+  display: block;
+  margin-bottom: 0.5rem;
+}

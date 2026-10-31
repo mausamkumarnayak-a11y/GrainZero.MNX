@@ -1,0 +1,179 @@
+.student-menu-page {
+  max-width: 960px;
+  margin: 0 auto;
+  padding-bottom: 3rem;
+}
+
+.menu-header {
+  margin-bottom: 1.25rem;
+}
+
+/* Date Strip */
+.date-strip {
+  display: flex;
+  gap: 0.5rem;
+  overflow-x: auto;
+  padding-bottom: 0.75rem;
+  margin-bottom: 1.5rem;
+  scrollbar-width: thin;
+}
+
+.date-pill {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 82px;
+  padding: 0.6rem 0.5rem;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.date-pill:hover {
+  border-color: #16a34a;
+}
+
+.date-pill.active {
+  background: #16a34a;
+  color: #ffffff;
+  border-color: #16a34a;
+  box-shadow: 0 4px 10px rgba(22, 163, 74, 0.25);
+}
+
+.pill-day {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  margin-bottom: 0.15rem;
+}
+
+.pill-date {
+  font-size: 0.85rem;
+}
+
+.date-pill.active .pill-day,
+.date-pill.active .pill-date {
+  color: #ffffff;
+}
+
+/* Menu Slot Cards */
+.menu-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.25rem;
+}
+
+.menu-slot-card {
+  padding: 1.25rem;
+  border-radius: 12px;
+  border: 1px solid #e5e7eb;
+  background: #ffffff;
+}
+
+.slot-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 0.75rem;
+}
+
+.slot-title-wrap {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.slot-icon {
+  font-size: 1.6rem;
+}
+
+.slot-name {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #1f2937;
+}
+
+.slot-time {
+  font-size: 0.8rem;
+  color: #6b7280;
+}
+
+.slot-cost-badge {
+  background: #f0fdf4;
+  color: #15803d;
+  font-weight: 700;
+  font-size: 0.88rem;
+  padding: 0.25rem 0.55rem;
+  border-radius: 6px;
+  border: 1px solid #bbf7d0;
+}
+
+.slot-cutoff-notice {
+  background: #f9fafb;
+  border-radius: 6px;
+  padding: 0.45rem 0.65rem;
+  font-size: 0.8rem;
+  color: #4b5563;
+  margin-bottom: 1rem;
+}
+
+.slot-dishes-list {
+  margin-top: 0.5rem;
+}
+
+.dishes-heading {
+  display: block;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  color: #9ca3af;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  margin-bottom: 0.5rem;
+}
+
+.dishes-items {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.dish-row-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.45rem 0.6rem;
+  background: #f9fafb;
+  border: 1px solid #f3f4f6;
+  border-radius: 6px;
+}
+
+.dish-title {
+  font-size: 0.88rem;
+  font-weight: 500;
+  color: #374151;
+}
+
+.dish-stars-pill {
+  background: #fef3c7;
+  color: #92400e;
+  font-size: 0.78rem;
+  font-weight: 700;
+  padding: 0.15rem 0.45rem;
+  border-radius: 4px;
+}
+
+.dish-stars-pill.unrated {
+  background: #f3f4f6;
+  color: #6b7280;
+}
+
+.no-dishes-text {
+  color: #9ca3af;
+  font-size: 0.85rem;
+  margin: 0;
+  font-style: italic;
+}
+

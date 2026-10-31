@@ -1,0 +1,218 @@
+.admin-skip-log-page {
+  max-width: 1050px;
+  margin: 0 auto;
+  padding-bottom: 3rem;
+}
+
+.skip-log-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 0.6rem;
+}
+
+.filter-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 1rem 1.25rem;
+  background: #ffffff;
+  border-radius: 12px;
+  border: 1px solid #e5e7eb;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.date-picker-group {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.date-picker-group label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #374151;
+}
+
+.date-picker-group input {
+  padding: 0.45rem 0.7rem;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 0.85rem;
+}
+
+.meal-tabs-row {
+  display: flex;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+}
+
+.meal-filter-tab {
+  background: #f3f4f6;
+  border: 1px solid #e5e7eb;
+  padding: 0.45rem 0.85rem;
+  border-radius: 6px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #4b5563;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.meal-filter-tab:hover {
+  background: #e5e7eb;
+}
+
+.meal-filter-tab.active {
+  background: #16a34a;
+  color: #ffffff;
+  border-color: #16a34a;
+}
+
+/* Two lists container */
+.lists-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
+}
+
+@media (max-width: 820px) {
+  .lists-container {
+    grid-template-columns: 1fr;
+  }
+}
+
+.list-card {
+  padding: 1.25rem;
+  border-radius: 12px;
+  border: 1px solid #e5e7eb;
+  background: #ffffff;
+}
+
+.list-card-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.list-title {
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #1f2937;
+}
+
+.list-subtitle {
+  font-size: 0.75rem;
+  color: #6b7280;
+}
+
+.search-input {
+  padding: 0.4rem 0.65rem;
+  border-radius: 6px;
+  border: 1px solid #d1d5db;
+  font-size: 0.8rem;
+  width: 170px;
+}
+
+.list-table-scroll {
+  max-height: 380px;
+  overflow-y: auto;
+}
+
+.roster-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.84rem;
+}
+
+.roster-table th {
+  padding: 0.55rem 0.5rem;
+  text-align: left;
+  border-bottom: 2px solid #e5e7eb;
+  color: #6b7280;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+}
+
+.roster-table td {
+  padding: 0.55rem 0.5rem;
+  border-bottom: 1px solid #f3f4f6;
+  color: #374151;
+}
+
+.attending-badge {
+  background: #f0fdf4;
+  color: #15803d;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.15rem 0.45rem;
+  border-radius: 4px;
+}
+
+.empty-list-msg {
+  padding: 2rem 1rem;
+  text-align: center;
+  color: #9ca3af;
+  font-size: 0.85rem;
+}
+
+.print-only {
+  display: none;
+}
+
+/* Print Styles */
+@media print {
+  .no-print,
+  .topnav,
+  header {
+    display: none !important;
+  }
+
+  body, .admin-skip-log-page {
+    background: #ffffff !important;
+    padding: 0 !important;
+  }
+
+  .print-only {
+    display: block !important;
+    margin-bottom: 1.5rem;
+  }
+
+  .print-header h2 {
+    margin: 0 0 0.25rem 0;
+    color: #000;
+  }
+
+  .print-header p {
+    margin: 0;
+    color: #555;
+    font-size: 0.85rem;
+  }
+
+  .lists-container {
+    grid-template-columns: 1fr 1fr !important;
+  }
+
+  .list-table-scroll {
+    max-height: none !important;
+    overflow: visible !important;
+  }
+
+  .card {
+    box-shadow: none !important;
+    border: 1px solid #ddd !important;
+  }
+}
+

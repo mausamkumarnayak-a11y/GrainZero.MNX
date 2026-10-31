@@ -1,0 +1,157 @@
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  /* Greens */
+  --g50:  #f0fdf4;
+  --g100: #dcfce7;
+  --g200: #bbf7d0;
+  --g300: #86efac;
+  --g400: #4ade80;
+  --g500: #22c55e;
+  --g600: #16a34a;
+  --g700: #15803d;
+  --g800: #166534;
+  --g900: #14532d;
+
+  /* Grays */
+  --gray50:  #f9fafb;
+  --gray100: #f3f4f6;
+  --gray200: #e5e7eb;
+  --gray300: #d1d5db;
+  --gray400: #9ca3af;
+  --gray500: #6b7280;
+  --gray600: #4b5563;
+  --gray700: #374151;
+  --gray800: #1f2937;
+  --gray900: #111827;
+
+  /* Accent */
+  --amber:   #f59e0b;
+  --red:     #ef4444;
+  --red-dark:#dc2626;
+
+  /* Shadows */
+  --sh-sm: 0 1px 3px rgba(0,0,0,.08);
+  --sh:    0 2px 8px rgba(0,0,0,.10);
+  --sh-md: 0 4px 18px rgba(0,0,0,.12);
+  --sh-lg: 0 8px 32px rgba(0,0,0,.14);
+
+  /* Shape */
+  --r:    12px;
+  --r-sm: 8px;
+  --r-xs: 5px;
+
+  /* Layout */
+  --nav-h: 60px;
+  --max-w: 1120px;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: var(--gray50);
+  color: var(--gray800);
+  line-height: 1.55;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+
+a { color: inherit; text-decoration: none; }
+button { cursor: pointer; border: none; font-family: inherit; font-size: inherit; }
+input, textarea, select { font-family: inherit; font-size: inherit; }
+img { max-width: 100%; display: block; }
+
+/* ── Utility buttons ─────────────────────────────────────── */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: .4rem;
+  padding: .55rem 1.2rem;
+  border-radius: var(--r-sm);
+  font-weight: 600;
+  font-size: .9rem;
+  transition: background .18s, opacity .18s, box-shadow .18s;
+  white-space: nowrap;
+}
+
+.btn-primary {
+  background: var(--g600);
+  color: #fff;
+  box-shadow: 0 2px 6px rgba(22,163,74,.28);
+}
+.btn-primary:hover:not(:disabled) { background: var(--g700); }
+
+.btn-outline {
+  background: transparent;
+  color: var(--g700);
+  border: 1.5px solid var(--g600);
+}
+.btn-outline:hover:not(:disabled) { background: var(--g50); }
+
+.btn-ghost {
+  background: transparent;
+  color: var(--gray600);
+}
+.btn-ghost:hover { background: var(--gray100); }
+
+.btn-danger {
+  background: var(--red);
+  color: #fff;
+}
+.btn-danger:hover:not(:disabled) { background: var(--red-dark); }
+
+.btn:disabled { opacity: .45; cursor: not-allowed; }
+
+/* ── Form elements ───────────────────────────────────────── */
+.field { display: flex; flex-direction: column; gap: .3rem; }
+.field label {
+  font-size: .78rem;
+  font-weight: 600;
+  color: var(--gray500);
+  text-transform: uppercase;
+  letter-spacing: .5px;
+}
+.field input, .field select, .field textarea {
+  border: 1.5px solid var(--gray200);
+  border-radius: var(--r-sm);
+  padding: .6rem .8rem;
+  background: var(--gray50);
+  outline: none;
+  transition: border-color .18s, background .18s;
+  color: var(--gray800);
+}
+.field input:focus, .field select:focus, .field textarea:focus {
+  border-color: var(--g500);
+  background: #fff;
+}
+.field input::placeholder { color: var(--gray400); }
+
+/* ── Cards ───────────────────────────────────────────────── */
+.card {
+  background: #fff;
+  border-radius: var(--r);
+  border: 1px solid var(--gray200);
+  box-shadow: var(--sh);
+}
+
+/* ── Page wrapper ────────────────────────────────────────── */
+.page-wrap {
+  max-width: var(--max-w);
+  margin: 0 auto;
+  padding: 2rem 1.5rem;
+}
+
+/* ── Alert banners ───────────────────────────────────────── */
+.alert {
+  padding: .65rem 1rem;
+  border-radius: var(--r-sm);
+  font-size: .875rem;
+  font-weight: 500;
+}
+.alert-error   { background: #fef2f2; color: #b91c1c; border: 1px solid #fecaca; }
+.alert-success { background: var(--g50); color: var(--g700); border: 1px solid var(--g200); }
+.alert-info    { background: #eff6ff; color: #1d4ed8; border: 1px solid #bfdbfe; }
+
+/* ── Misc helpers ────────────────────────────────────────── */
+.text-muted  { color: var(--gray400); font-size: .85rem; }
+.spinner-wrap { display:flex; align-items:center; justify-content:center; padding:4rem; }

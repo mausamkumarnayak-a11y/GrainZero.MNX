@@ -1,0 +1,183 @@
+/* ── Topnav ──────────────────────────────────────────────── */
+.topnav {
+  position: sticky;
+  top: 0;
+  z-index: 200;
+  background: #fff;
+  border-bottom: 1px solid var(--gray200);
+  box-shadow: var(--sh-sm);
+}
+
+.admin-bar { background: var(--g800); }
+.admin-bar .nav-link        { color: rgba(255,255,255,.8); }
+.admin-bar .nav-link.active { color: #fff; background: rgba(255,255,255,.15); }
+.admin-bar .nav-link:hover:not(.active) { color: #fff; background: rgba(255,255,255,.1); }
+.admin-bar .nav-brand-name  { color: #fff; }
+.admin-bar .nav-user        { color: rgba(255,255,255,.85); }
+.admin-bar .nav-logout      { color: rgba(255,255,255,.8); }
+.admin-bar .nav-logout:hover{ color: #fff; background: rgba(255,255,255,.12); }
+.admin-bar .hamburger       { color: #fff; }
+
+.topnav-inner {
+  max-width: var(--max-w);
+  margin: 0 auto;
+  height: var(--nav-h);
+  padding: 0 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+}
+
+.nav-brand {
+  display: flex;
+  align-items: center;
+  gap: .55rem;
+  flex-shrink: 0;
+}
+
+.nav-logo {
+  width: 36px;
+  height: 36px;
+  object-fit: contain;
+  border-radius: 6px;
+}
+
+.nav-brand-name {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--g800);
+  letter-spacing: -.3px;
+}
+
+.admin-badge {
+  font-size: .6rem;
+  background: var(--g400);
+  color: var(--g900);
+  padding: .1rem .35rem;
+  border-radius: 4px;
+  font-weight: 700;
+  vertical-align: middle;
+  margin-left: .2rem;
+}
+
+.nav-links {
+  display: flex;
+  gap: .15rem;
+  margin-left: .5rem;
+}
+
+.nav-link {
+  padding: .42rem .8rem;
+  border-radius: var(--r-xs);
+  font-size: .85rem;
+  font-weight: 500;
+  color: var(--gray600);
+  transition: background .15s, color .15s;
+}
+
+.nav-link.active {
+  background: var(--g100);
+  color: var(--g700);
+  font-weight: 600;
+}
+
+.nav-link:hover:not(.active) {
+  background: var(--gray100);
+  color: var(--gray800);
+}
+
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+  margin-left: auto;
+}
+
+.nav-user {
+  font-size: .82rem;
+  font-weight: 500;
+  color: var(--gray600);
+  white-space: nowrap;
+  max-width: 160px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.nav-logout {
+  font-size: .82rem;
+  padding: .35rem .75rem;
+  border-radius: var(--r-xs);
+}
+
+/* ── Hamburger ───────────────────────────────────────────── */
+.hamburger {
+  margin-left: auto;
+  background: none;
+  font-size: 1.35rem;
+  padding: .3rem .5rem;
+  border-radius: var(--r-xs);
+  color: var(--gray700);
+  line-height: 1;
+}
+
+.mobile-menu {
+  display: flex;
+  flex-direction: column;
+  border-top: 1px solid var(--gray200);
+  padding: .5rem 1rem .75rem;
+  gap: .2rem;
+  background: #fff;
+}
+
+.admin-bar .mobile-menu {
+  background: var(--g800);
+  border-top-color: rgba(255,255,255,.15);
+}
+
+.mobile-link {
+  padding: .6rem .75rem;
+  border-radius: var(--r-xs);
+  font-size: .9rem;
+  font-weight: 500;
+  color: var(--gray700);
+  transition: background .15s;
+}
+
+.mobile-link.active {
+  background: var(--g100);
+  color: var(--g700);
+  font-weight: 600;
+}
+
+.admin-bar .mobile-link        { color: rgba(255,255,255,.85); }
+.admin-bar .mobile-link.active { background: rgba(255,255,255,.15); color: #fff; }
+
+.mobile-user {
+  padding: .5rem .75rem 0;
+  font-size: .82rem;
+  color: var(--gray500);
+}
+.admin-bar .mobile-user { color: rgba(255,255,255,.65); }
+
+.mobile-logout {
+  align-self: flex-start;
+  margin-top: .25rem;
+  font-size: .85rem;
+  padding: .35rem .75rem;
+}
+
+/* ── Main body ───────────────────────────────────────────── */
+.app-shell { display: flex; flex-direction: column; min-height: 100vh; }
+.page-body { flex: 1; }
+
+/* ── Responsive helpers ──────────────────────────────────── */
+.desktop-only { display: flex; }
+.mobile-only  { display: none; }
+
+@media (max-width: 768px) {
+  .desktop-only { display: none !important; }
+  .mobile-only  { display: flex !important; }
+  .nav-links.desktop-only { display: none !important; }
+  .nav-right.desktop-only { display: none !important; }
+}
+
