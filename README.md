@@ -85,43 +85,72 @@ PORT=3001
 
 ### 1. Install Dependencies
 ```bash
-# Install server packages
-cd server
-npm install
-
-# Install client packages
-cd ../client
-npm install
-cd ..
+npm run install:all
 ```
 
 ### 2. Build Frontend for Production
 ```bash
 npm run build
 ```
-*(This triggers `vite build` and generates the production bundle in `client/dist/`)*
+*(Installs all dependencies and builds the production React bundle into `client/dist/`)*
 
 ### 3. Run Production Server
 ```bash
 npm start
 ```
-*(Starts Express backend on port 3001, automatically connects to PostgreSQL, creates all tables, seeds default settings and meal slots, and serves the React frontend at http://localhost:3001)*
+*(Starts Express backend on port 3001 or `$PORT`, connects to PostgreSQL, creates all tables, seeds default settings and meal slots, and serves the React frontend at http://localhost:3001)*
 
 ### 4. Development Mode (Hot-Reload)
 Run these in separate terminal windows:
 
 ```bash
 # Terminal 1: Backend server
-cd server
-node index.js
+npm run server
 ```
 
 ```bash
 # Terminal 2: Vite dev server
-cd client
-npm run dev
+npm run client
 ```
 *(Dev frontend runs at http://localhost:5173 with API requests proxied to http://localhost:3001)*
+
+---
+
+## ☁️ Deployment Guide
+
+### Option A: 1-Click Deploy on Render
+1. Go to [Render Dashboard](https://dashboard.render.com/) > **New** > **Blueprint**.
+2. Connect this repository (`mausamkumarnayak-a11y/GrainZero.MNX`).
+3. Render will auto-detect [`render.yaml`](./render.yaml).
+4. Set your Environment Variables:
+   - `DATABASE_URL`: Your PostgreSQL connection string (e.g. Neon, Supabase, or AWS RDS with `?sslmode=require`)
+   - `GEMINI_API_KEY`: Your Google Gemini API Key
+   - `ADMIN_SIGNUP_CODE`: Access code for mess authority registration (default: `GRAIN-ADMIN-2026`)
+5. Click **Apply** — Render runs `npm run build` and starts the app with zero downtime.
+
+### Option B: Deploy on Railway
+1. Go to [Railway Dashboard](https://railway.app/) > **New Project** > **Deploy from GitHub repo**.
+2. Select `GrainZero.MNX`. Railway detects [`railway.json`](./railway.json) & [`Procfile`](./Procfile).
+3. In **Variables**, add:
+   - `DATABASE_URL`
+   - `GEMINI_API_KEY`
+   - `JWT_SECRET` (generate a random 32-character string)
+   - `ADMIN_SIGNUP_CODE`
+4. Deploy!
+
+### Option C: Docker Container Deployment
+Build and run anywhere with Docker:
+```bash
+# Build production image
+docker build -t grainzero:latest .
+
+# Run container
+docker run -p 3001:3001 \
+  -e DATABASE_URL="your_postgres_connection_string" \
+  -e GEMINI_API_KEY="your_gemini_api_key" \
+  -e JWT_SECRET="your_jwt_secret" \
+  grainzero:latest
+```
 
 ---
 

@@ -1,4 +1,5 @@
 const path = require('path');
+const fs   = require('fs');
 require('dotenv').config({ path: path.join(__dirname, '.env') });
 require('dotenv').config();
 
@@ -9,6 +10,11 @@ const { initDb } = require('./db');
 const app = express();
 app.use(cors());
 app.use(express.json());
+
+// ── Health Check ─────────────────────────────────────────────────────────────
+app.get('/api/health', (req, res) => {
+  res.status(200).json({ status: 'ok', timestamp: new Date().toISOString() });
+});
 
 // ── API Routes ───────────────────────────────────────────────────────────────
 app.use('/api/auth', require('./routes/auth'));
@@ -30,10 +36,16 @@ app.use((err, req, res, next) => {
 
 // ── Serve React build in production ──────────────────────────────────────────
 const clientDist = path.join(__dirname, '..', 'client', 'dist');
-app.use(express.static(clientDist));
-app.get('*', (_req, res) => {
-  res.sendFile(path.join(clientDist, 'index.html'));
-});
+if (fs.existsSync(clientDist)) {
+  app.use(express.static(clientDist));
+  app.get('*', (_req, res) => {
+    res.sendFile(path.join(clientDist, 'index.html'));
+  });
+} else {
+  app.get('/', (_req, res) => {
+    res.json({ message: '🌿 GrainZero API is running. Client build in /client/dist.' });
+  });
+}
 
 const PORT = process.env.PORT || 3001;
 
