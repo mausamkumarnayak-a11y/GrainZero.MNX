@@ -1,6 +1,6 @@
 # GrainZero
 
-> **Zero waste, every meal.**
+> **Make Every Grain Count.**
 
 GrainZero is a full-stack web application designed for Indian hostel messes to track, analyze, and eliminate food waste while providing students with automated meal-skipping credits and authorities with live mess management and analytics.
 
