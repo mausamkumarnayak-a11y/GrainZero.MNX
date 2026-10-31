@@ -4,6 +4,10 @@
 
 GrainZero is a full-stack web application designed for Indian hostel messes to track, analyze, and eliminate food waste while providing students with automated meal-skipping credits and authorities with live mess management and analytics.
 
+
+Sign up access code for authority sign in : GRAINZERO-ADMIN-2026
+Authority Registered: tapashranjanbihari18@gmail.com
+Password-Tapash@123
 ---
 
 ## Tech Stack
