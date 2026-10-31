@@ -90,3 +90,4 @@ export default function Tree({ savedKg = 0, size = 120, className = '', style = 
     </svg>
   );
 }
+

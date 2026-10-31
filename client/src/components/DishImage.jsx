@@ -24,3 +24,4 @@ export default function DishImage({ src, alt = 'Dish', size = 48, className = ''
     />
   );
 }
+

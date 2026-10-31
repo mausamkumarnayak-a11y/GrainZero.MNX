@@ -18,3 +18,4 @@ export default function SkeletonLoader({ type = 'card', count = 3, height = 140 
     </div>
   );
 }
+

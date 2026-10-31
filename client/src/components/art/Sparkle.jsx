@@ -20,3 +20,4 @@ export default function Sparkle({ size = 16, color = '#F2B01E', className = '', 
     </svg>
   );
 }
+

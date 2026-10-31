@@ -34,3 +34,4 @@ export default function Coin({ size = 24, className = '', style = {} }) {
     </svg>
   );
 }
+

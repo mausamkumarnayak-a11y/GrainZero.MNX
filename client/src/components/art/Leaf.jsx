@@ -41,3 +41,4 @@ export default function Leaf({ size = 24, color = '#15803d', accent = '#4cae4c',
     </svg>
   );
 }
+

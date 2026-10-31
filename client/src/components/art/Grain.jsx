@@ -40,3 +40,4 @@ export default function Grain({ size = 24, color = '#F2B01E', className = '', st
     </svg>
   );
 }
+

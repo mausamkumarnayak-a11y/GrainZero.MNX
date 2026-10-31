@@ -14,3 +14,4 @@ export default function AnimatedPage({ children, className = '' }) {
     </motion.div>
   );
 }
+

@@ -42,3 +42,4 @@ export default function AnimatedCounter({ value, duration = 800, prefix = '', su
     </span>
   );
 }
+

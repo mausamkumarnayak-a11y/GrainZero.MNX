@@ -119,3 +119,4 @@ export default function CountdownRing({ secondsLeft, cutoffTime }) {
     </div>
   );
 }
+

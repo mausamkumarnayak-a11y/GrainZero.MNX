@@ -47,3 +47,4 @@ export default function DishIllustration({ size = 48, className = '' }) {
     </svg>
   );
 }
+
